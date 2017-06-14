@@ -1,0 +1,9 @@
+{application, etcpjson,
+ [
+  {description, "An Erlang TCP/SSL server for JSON transport"},
+  {vsn, "0.0.1"},
+  {registered, []},
+  {applications, [kernel, stdlib, sasl, ranch, jsx, lager]},
+  {mod, {etcpjson, []}},
+  {env, []}
+ ]}.
