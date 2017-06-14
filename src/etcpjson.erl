@@ -32,9 +32,10 @@ start(_StartType, _StartArgs) ->
     case application:get_env(ssl) of
         {ok, true} ->
             {ok, SSLOpts} = application:get_env(ssl_opts),
-            lager:info("ssl server listening ~s:~p",
-                       [inet:ntoa(ListenIf), ListenPort]),
-            {ranch_ssl, TransOpts0 ++ SSLOpts};
+            TransOpts1 = TransOpts0 ++ SSLOpts,
+            lager:info("ssl server listening ~s:~p ~p",
+                       [inet:ntoa(ListenIf), ListenPort, TransOpts1]),
+            {ranch_ssl, TransOpts1};
         {ok, false} ->
             lager:info("tcp server listening ~s:~p",
                        [inet:ntoa(ListenIf), ListenPort]),

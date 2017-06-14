@@ -32,7 +32,7 @@ paths=$paths" deps/*/ebin"
 opts="-etcpjson"
 opts=$opts" port $port"
 opts=$opts" ssl $ssl"
-opts=$opts" ssl_opts [{certfile,\"certs/server.crt\"},{keyfile,\"certs/server.key\"}]"
+opts=$opts" ssl_opts [{certfile,\"priv/certs/server.crt\"},{keyfile,\"priv/certs/server.key\"}]"
 opts=$opts" interface $interface"
 
 # sasl opts

@@ -33,6 +33,7 @@ handle_info({OK, Sock, Data},
                    trnsprt = Transport} = State) ->
     ok = Transport:setopts(Sock, [{active, once}]),
     lager:info("RX ~p", [Data]),
+    Transport:send(Sock, Data),
     {noreply, State};
 handle_info({Closed, Sock},
             #state{trnsprt_msgs = {_, Closed, _}, sock = Sock,
