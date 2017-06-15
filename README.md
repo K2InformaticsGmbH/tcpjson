@@ -19,7 +19,7 @@ ranch:start_listener(
 ```
 Ref : [ranch function reference](https://ninenines.eu/docs/en/ranch/1.3/manual/ranch/)
 
-## Demo (Server)
+## Demo (Erlang Server)
 
 The provided `start.sh` will start `etcpjson` application at 127.0.0.1:7443 with SSL (certificates from priv/certs folder). A echo handler (`etcjson_echo`) will be automatically attached to handle the TCP connections and will wrap any received JSON as follows:
 ```json
