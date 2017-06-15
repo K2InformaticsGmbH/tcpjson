@@ -7,6 +7,7 @@
 * python
 
 ## Integration and use
+### Erlang Server
 
 1. add `etcpjson` to your project's dependency and to `included_applications` list of your erlang application in `.app` (`.app.src`)
 1. implement `etcjson_srv` behavior in your application (e.g. in `myapp_etcjson` module) see `etcpjson_echo` module as an exmaple implementation
@@ -19,7 +20,17 @@ ranch:start_listener(
 ```
 Ref : [ranch function reference](https://ninenines.eu/docs/en/ranch/1.3/manual/ranch/)
 
-## Demo (Erlang Server)
+### Python Client
+`clients/python/tcpjson.py` module implements `class TcpJson` that encapsulates the JSON-over-TCP protocol. A sample client implementation using this class can be found in `clients/python/echo_client.py` (see example below).
+```python
+from tcpjson import TcpJson
+tj = TcpJson(host_str, port_int, ssl_bool)
+tj.Send(Py_Obj_For_Valid_Json)
+Py_Obj = tj.Recv()
+```
+
+## Demo
+### Erlang Server
 
 The provided `start.sh` will start `etcpjson` application at 127.0.0.1:7443 with SSL (certificates from priv/certs folder). A echo handler (`etcjson_echo`) will be automatically attached to handle the TCP connections and will wrap any received JSON as follows:
 ```json
@@ -50,7 +61,8 @@ Eshell V8.3  (abort with ^G)
 12:04:20.778 [info] terminate 127.0.0.1:37118 : normal
 ```
 
-## Demo (Python Client)
+## Demo
+### Python Client
 
 A sample python client is provided in (clients/python.py)
 usage:
@@ -70,62 +82,35 @@ optional arguments:
 
 example client log:
 ```sh
-python.exe clients/python/echo_client.py
-2017-06-15 13:21:46 SSL connecting to 127.0.0.1:7443
- -> 1
-2017-06-15 13:21:48 TX:    1
-2017-06-15 13:21:48 TXRAW: b'\x01\x00\x00\x001'
+$ python.exe clients/python/echo_client.py
+2017-06-15 13:40:11 SSL connecting to 127.0.0.1:7443
+-------------------------------------------------
+Enter JSON strings at 'TX:' prompt or 'q' to exit
+-------------------------------------------------
+2017-06-15 13:40:11 TX     : 1
+2017-06-15 13:40:11 TXRAW  : b'\x01\x00\x00\x001'
 10
-2017-06-15 13:21:50 RXRAW: b'\n\x00\x00\x00{"echo":1}'
-2017-06-15 13:21:50 RX: {
-    "echo": 1
-}
-2017-06-15 13:21:50 RXJSON : {'echo': 1}
- -> 1.1
-2017-06-15 13:21:51 TX:    1.1
-2017-06-15 13:21:51 TXRAW: b'\x03\x00\x00\x001.1'
+2017-06-15 13:40:13 RXRAW  : b'\n\x00\x00\x00{"echo":1}'
+2017-06-15 13:40:13 RXJSON : {'echo': 1}
+2017-06-15 13:40:13 TX     : 1.1
+2017-06-15 13:40:15 TXRAW  : b'\x03\x00\x00\x001.1'
 12
-2017-06-15 13:21:53 RXRAW: b'\x0c\x00\x00\x00{"echo":1.1}'
-2017-06-15 13:21:53 RX: {
-    "echo": 1.1
-}
-2017-06-15 13:21:53 RXJSON : {'echo': 1.1}
- -> "test"
-2017-06-15 13:21:56 TX:    "test"
-2017-06-15 13:21:56 TXRAW: b'\x06\x00\x00\x00"test"'
+2017-06-15 13:40:17 RXRAW  : b'\x0c\x00\x00\x00{"echo":1.1}'
+2017-06-15 13:40:17 RXJSON : {'echo': 1.1}
+2017-06-15 13:40:17 TX     : "test"
+2017-06-15 13:40:20 TXRAW  : b'\x06\x00\x00\x00"test"'
 15
-2017-06-15 13:21:58 RXRAW: b'\x0f\x00\x00\x00{"echo":"test"}'
-2017-06-15 13:21:58 RX: {
-    "echo": "test"
-}
-2017-06-15 13:21:58 RXJSON : {'echo': 'test'}
- -> [1,2]
-2017-06-15 13:22:05 TX:    [
-    1,
-    2
-]
-2017-06-15 13:22:05 TXRAW: b'\x06\x00\x00\x00[1, 2]'
-14
-2017-06-15 13:22:07 RXRAW: b'\x0e\x00\x00\x00{"echo":[1,2]}'
-2017-06-15 13:22:07 RX: {
-    "echo": [
-        1,
-        2
-    ]
-}
-2017-06-15 13:22:07 RXJSON : {'echo': [1, 2]}
- -> {"test":1}
-2017-06-15 13:22:33 TX:    {
-    "test": 1
-}
-2017-06-15 13:22:33 TXRAW: b'\x0b\x00\x00\x00{"test": 1}'
+2017-06-15 13:40:22 RXRAW  : b'\x0f\x00\x00\x00{"echo":"test"}'
+2017-06-15 13:40:22 RXJSON : {'echo': 'test'}
+2017-06-15 13:40:22 TX     : [1,2,3]
+2017-06-15 13:40:26 TXRAW  : b'\t\x00\x00\x00[1, 2, 3]'
+16
+2017-06-15 13:40:28 RXRAW  : b'\x10\x00\x00\x00{"echo":[1,2,3]}'
+2017-06-15 13:40:28 RXJSON : {'echo': [1, 2, 3]}
+2017-06-15 13:40:28 TX     : {"test":1}
+2017-06-15 13:41:03 TXRAW  : b'\x0b\x00\x00\x00{"test": 1}'
 19
-2017-06-15 13:22:35 RXRAW: b'\x13\x00\x00\x00{"echo":{"test":1}}'
-2017-06-15 13:22:35 RX: {
-    "echo": {
-        "test": 1
-    }
-}
-2017-06-15 13:22:35 RXJSON : {'echo': {'test': 1}}
- -> q
+2017-06-15 13:41:05 RXRAW  : b'\x13\x00\x00\x00{"echo":{"test":1}}'
+2017-06-15 13:41:05 RXJSON : {'echo': {'test': 1}}
+2017-06-15 13:41:05 TX     : q
 ```

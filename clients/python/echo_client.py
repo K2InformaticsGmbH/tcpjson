@@ -1,5 +1,5 @@
 import argparse
-import datetime
+import json
 import tcpjson 
 from tcpjson import TcpJson
 
@@ -20,16 +20,19 @@ def Main():
     port = args.port
 
     tj = TcpJson(host, port, not args.no_ssl)
-    message = input(" -> ")
+    print("-------------------------------------------------")
+    print("Enter JSON strings at 'TX:' prompt or 'q' to exit")
+    print("-------------------------------------------------")
+    message = input(tcpjson.Ts() + 'TX     : ')
 
     while message != 'q':
 
-        tj.Send(message)
+        tj.Send(json.loads(message))
 
         Rx = tj.Recv()
         print(tcpjson.Ts() + 'RXJSON : ', end='')
         print(Rx)
-        message = input(" -> ")
+        message = input(tcpjson.Ts() + 'TX     : ')
 
 if __name__ == '__main__':
     Main()
