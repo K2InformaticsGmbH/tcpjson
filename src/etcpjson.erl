@@ -41,7 +41,8 @@ start(_StartType, _StartArgs) ->
                        [inet:ntoa(ListenIf), ListenPort]),
             {ranch_tcp, TransOpts0}
     end,
-    ranch:start_listener(?MODULE, 100, Transport, TransOpts, etcpjson_srv, []),
+    ranch:start_listener(?MODULE, 100, Transport, TransOpts, etcpjson_srv,
+                         [etcpjson_echo]),
     supervisor:start_link(?MODULE, []).
 
 stop(_State) ->
