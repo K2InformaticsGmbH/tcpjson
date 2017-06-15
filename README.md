@@ -1,4 +1,10 @@
-# tcpepj : An Erlang TCP/SSL server and Python client JSON transport
+# tcpjson : TCP/SSL server and client with JSON transport
+
+## Current implementations
+### servers
+* erlang
+### clients
+* python
 
 ## Integration and use
 
