@@ -55,7 +55,7 @@ Eshell V8.3  (abort with ^G)
 A sample python client is provided in (clients/python.py)
 usage:
 ```sh
- python.exe clients/python.py -h
+python.exe clients/python/echo_client.py -h
 usage: python.py [-h] [-ip IP_ADDRESS] [-p PORT] [-ns]
 
 TCP/SSL JSON Client
@@ -70,34 +70,62 @@ optional arguments:
 
 example client log:
 ```sh
-python.exe clients/python.py
-2017-06-15 12:28:17 SSL connecting to 127.0.0.1:7443
+python.exe clients/python/echo_client.py
+2017-06-15 13:21:46 SSL connecting to 127.0.0.1:7443
  -> 1
-2017-06-15 12:28:20 TX:    1
-2017-06-15 12:28:20 TXRAW: b'\x01\x00\x00\x001'
+2017-06-15 13:21:48 TX:    1
+2017-06-15 13:21:48 TXRAW: b'\x01\x00\x00\x001'
 10
-2017-06-15 12:28:22 RXRAW: b'\n\x00\x00\x00{"echo":1}'
-2017-06-15 12:28:22 RX: {
+2017-06-15 13:21:50 RXRAW: b'\n\x00\x00\x00{"echo":1}'
+2017-06-15 13:21:50 RX: {
     "echo": 1
 }
- -> 1234
-2017-06-15 12:28:24 TX:    1234
-2017-06-15 12:28:24 TXRAW: b'\x04\x00\x00\x001234'
-13
-2017-06-15 12:28:26 RXRAW: b'\r\x00\x00\x00{"echo":1234}'
-2017-06-15 12:28:26 RX: {
-    "echo": 1234
+2017-06-15 13:21:50 RXJSON : {'echo': 1}
+ -> 1.1
+2017-06-15 13:21:51 TX:    1.1
+2017-06-15 13:21:51 TXRAW: b'\x03\x00\x00\x001.1'
+12
+2017-06-15 13:21:53 RXRAW: b'\x0c\x00\x00\x00{"echo":1.1}'
+2017-06-15 13:21:53 RX: {
+    "echo": 1.1
 }
+2017-06-15 13:21:53 RXJSON : {'echo': 1.1}
+ -> "test"
+2017-06-15 13:21:56 TX:    "test"
+2017-06-15 13:21:56 TXRAW: b'\x06\x00\x00\x00"test"'
+15
+2017-06-15 13:21:58 RXRAW: b'\x0f\x00\x00\x00{"echo":"test"}'
+2017-06-15 13:21:58 RX: {
+    "echo": "test"
+}
+2017-06-15 13:21:58 RXJSON : {'echo': 'test'}
+ -> [1,2]
+2017-06-15 13:22:05 TX:    [
+    1,
+    2
+]
+2017-06-15 13:22:05 TXRAW: b'\x06\x00\x00\x00[1, 2]'
+14
+2017-06-15 13:22:07 RXRAW: b'\x0e\x00\x00\x00{"echo":[1,2]}'
+2017-06-15 13:22:07 RX: {
+    "echo": [
+        1,
+        2
+    ]
+}
+2017-06-15 13:22:07 RXJSON : {'echo': [1, 2]}
  -> {"test":1}
-2017-06-15 12:28:37 TX:    {
+2017-06-15 13:22:33 TX:    {
     "test": 1
 }
-2017-06-15 12:28:37 TXRAW: b'\x0b\x00\x00\x00{"test": 1}'
+2017-06-15 13:22:33 TXRAW: b'\x0b\x00\x00\x00{"test": 1}'
 19
-2017-06-15 12:28:39 RXRAW: b'\x13\x00\x00\x00{"echo":{"test":1}}'
-2017-06-15 12:28:39 RX: {
+2017-06-15 13:22:35 RXRAW: b'\x13\x00\x00\x00{"echo":{"test":1}}'
+2017-06-15 13:22:35 RX: {
     "echo": {
         "test": 1
     }
 }
+2017-06-15 13:22:35 RXJSON : {'echo': {'test': 1}}
+ -> q
 ```
