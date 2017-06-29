@@ -74,7 +74,6 @@ init({Ref, Sock, Transport, Mod}) ->
                        lager:error("~p:init error", [Error]),
                        error({Mod, Error})
                end,
-    lager:info("peer connected ~s:~p", [inet:ntoa(IP), Port]),
     ok = Transport:setopts(Sock, [{active, once}]),
     gen_server:enter_loop(
       ?MODULE, [],
@@ -97,10 +96,8 @@ handle_info({OK, Sock, Data},
 handle_info({Closed, Sock},
             #st{trnsprt_msgs = {_, Closed, _}, sock = Sock,
                 trnsprt = Transport} = S) ->
-    lager:info("peer closed ~s:~p",
-               [inet:ntoa(S#st.peer_ip), S#st.peer_port]),
     catch Transport:close(),
-    {stop, normal, S};
+    {stop, {shutdown, peer_closed}, S};
 handle_info({Error, Sock, Reason},
             #st{trnsprt_msgs = {_, _, Error}, sock = Sock,
                 trnsprt = Transport} = S) ->

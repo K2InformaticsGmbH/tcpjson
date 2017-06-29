@@ -8,6 +8,7 @@
 -record(state, {ip, port, srv}).
 
 init(IP, Port, Srv) ->
+    lager:info("peer connected ~s:~p", [inet:ntoa(IP), Port]),
     {ok, #state{ip = IP, port = Port, srv = Srv}}.
 
 handle_info({rx, Json}, #state{srv = Srv} = State) ->
