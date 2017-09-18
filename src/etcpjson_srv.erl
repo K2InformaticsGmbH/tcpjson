@@ -142,13 +142,12 @@ terminate(Reason, #st{mod = Mod, mod_state = ModS}) ->
 
 send(Json, {?MODULE, Transport, Sock}) ->
     JsonBin = jsx:encode(Json),
-    JsonFrame = <<(byte_size(JsonBin)):4/little-unsigned-integer-unit:8,
-                  JsonBin/binary>>,
+    JsonFrame = <<(byte_size(JsonBin)):4/unit:8, JsonBin/binary>>,
     Transport:send(Sock, JsonFrame).
 
 close() -> self() ! {?MODULE, '$close_i'}.
 
-parse_json_stream(<<Len:4/little-unsigned-integer-unit:8, Rest/binary>>) ->
+parse_json_stream(<<Len:4/unit:8, Rest/binary>>) ->
     case Rest of
         <<JsonBin:Len/binary, Partial/binary>> ->
             {jsx:decode(JsonBin, [return_maps]), Partial};

@@ -20,7 +20,7 @@ class TcpJson:
     ## TX JSON with unsigned 4-bytes length header
     def Send(self, jsn):
         tx = json.dumps(jsn).encode('utf-8')            # serialize to utf-8 bytes
-        txlen = socket.htonl(len(tx))                   # calculate payload length into network-byte-order
+        txlen = len(tx)                                 # calculate payload length
         tx = txlen.to_bytes(4, byteorder = 'big') + tx  # prepend 32 bit length header
         print(Ts() + 'TXRAW  : ', end='')
         print(tx, flush=True)
@@ -29,7 +29,7 @@ class TcpJson:
     ## RX JSON with unsigned 4-bytes length header
     def Recv(self):
         data = self._sock.recv(4) # receive only 4 bytes first (32 bit length header)
-        rxlen = socket.ntohl(int.from_bytes(data, byteorder='big')) # convert host-byte-order to integer
+        rxlen = int.from_bytes(data, byteorder='big') # convert to integer
         print(rxlen)
         rx = self._sock.recv(rxlen)      # receive a full json binary and decode to string
         jsn = json.loads(rx.decode())   # decode json to python object
