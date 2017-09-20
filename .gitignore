@@ -9,6 +9,7 @@ ebin/*.beam
 rel/example_project
 .concrete/DEV_MODE
 .rebar
+.rebar3
 ebin/
 log/
 clients/python/__pycache__/
